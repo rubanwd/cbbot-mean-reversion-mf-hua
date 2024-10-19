@@ -1,5 +1,3 @@
-# indicators.py
-
 class Indicators:
     @staticmethod
     def calculate_ema(df, span):
@@ -22,12 +20,10 @@ class Indicators:
         return macd, macd_signal
 
     @staticmethod
-    def calculate_stochastic(df, period=14):
-        high_14 = df['high'].rolling(window=period).max()
-        low_14 = df['low'].rolling(window=period).min()
-        k_percent = 100 * ((df['close'] - low_14) / (high_14 - low_14))
-        d_percent = k_percent.rolling(window=3).mean()
-        return k_percent, d_percent
+    def calculate_trend_direction(df, long_ema_period=200):
+        # Using long-term EMA to determine trend direction
+        long_ema = df['close'].ewm(span=long_ema_period, adjust=False).mean()
+        return 'uptrend' if df['close'].iloc[-1] > long_ema.iloc[-1] else 'downtrend'
 
     @staticmethod
     def calculate_bollinger_bands(df, window=20):
@@ -36,4 +32,3 @@ class Indicators:
         upper_band = middle_band + (std_dev * 2)
         lower_band = middle_band - (std_dev * 2)
         return upper_band, middle_band, lower_band
-

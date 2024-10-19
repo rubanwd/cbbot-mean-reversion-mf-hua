@@ -49,7 +49,7 @@ class BybitDemoSession:
                 raise Exception(f"API Error: {response['retMsg']}")
             return response['result']['list']
         except Exception as e:
-            print(f"Ошибка при получении исторических данных: {e}")
+            print(f"Error fetching historical data: {e}")
             return None
         
     def set_leverage(self, symbol, leverage):
